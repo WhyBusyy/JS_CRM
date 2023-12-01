@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>사용자 데이터</title>
+</head>
+
+<body>
+    <h1> 사용자 정보 </h1>
+    <table>
+        <thead>
+            <tr>
+                {% for key in header %}
+                <td>{{ key }}</td>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr>
+                
+                <td>{{data[0].ID}}</td>
+                <td>{{data[0].Name}}</td>
+                <td>{{data[0].Gender}}</td>
+                <td>{{data[0].Age}}</td>
+                <td>{{data[0].Birthdate}}</td>
+                <td>{{data[0].Address}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+    </div>
+</body>
+
+</html>

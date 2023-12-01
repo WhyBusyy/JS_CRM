@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>사용자 데이터</title>
+</head>
+
+<body>
+    <h1> 사용자 테이블 </h1>
+    <form action="/search/?q=" method="GET">
+        <input name="q" type="text" placeholder="사용자 이름을 입력하세요">
+        <button>검색</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                {% for key in header %}
+                <td>{{ key }}</td>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            {% for user in data %}
+            <tr>
+                {% for key in header %}
+                <td><a href="/user/{{ user.ID }}">{{ user[key] }}</a></td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {% for num in range(1, page + 1) %}
+        <a href="/?page={{ num }}" {% if num==currentPage %}id="active" {% endif %}>{{ num }}</a>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
