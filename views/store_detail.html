@@ -20,24 +20,21 @@
             </ul>
         </nav>
     </div>
-    <h1> 사용자 정보 </h1>
+    <h1> 상점 정보 </h1>
     <table>
         <thead>
             <tr>
-                <td>{{ header[1] }}</td>
-                <td>{{ header[2] }}</td>
-                <td>{{ header[3] }}</td>
-                <td>{{ header[4] }}</td>
-                <td>{{ header[5] }}</td>
+                {% for key in header %}
+                <td>{{ key }}</td>
+                {% endfor %}
             </tr>
         </thead>
         <tbody id="tableBody">
             <tr>           
-                <td>{{data[0].Name}}</td>
-                <td>{{data[0].Gender}}</td>
-                <td>{{data[0].Age}}</td>
-                <td>{{data[0].Birthdate}}</td>
-                <td>{{data[0].Address}}</td>
+                <td>{{data[0].id}}</td>
+                <td>{{data[0].name}}</td>
+                <td>{{data[0].type}}</td>
+                <td>{{data[0].address}}</td>
             </tr>
         </tbody>
     </table>
