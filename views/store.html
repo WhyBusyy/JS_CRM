@@ -20,50 +20,43 @@
             </ul>
         </nav>
     </div>
-    <h1> 고객 목록 </h1>
-    <form action="/user" method="GET">
-        <input name="q" type="text" placeholder="사용자 이름을 입력하세요">
-        <button>검색</button>
-    </form>
+    <h1> 상점 목록 </h1>
     <table>
         <thead>
             <tr>
-                <td>{{ header[0] }}</td>
-                <td>{{ header[1] }}</td>
-                <td>{{ header[2] }}</td>
-                <td>{{ header[3] }}</td>
-                <td>{{ header[4] }}</td>
+                {% for key in header %}
+                <td>{{ key }}</td>
+                {% endfor %}
             </tr>
         </thead>
         <tbody id="tableBody">
-            {% for user in data %}
+            {% for store in data %}
             <tr>
-                <td><a href="/user/{{ user.ID }}">{{ user.ID }}</a></td>
-                <td>{{ user.Name }}</td>
-                <td>{{ user.Gender }}</td>
-                <td>{{ user.Age }}</td>
-                <td>{{ user.Birthdate }}</td>
+                <td><a href="/store/{{ store.id }}">{{ store.id }}</a></td>
+                <td>{{ store.name }}</td>
+                <td>{{ store.type }}</td>
+                <td>{{ store.address }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <div class="pagination">
         {% if currentPage !== 1 %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage - 1 }}" id="prev">prev</a>
+        <a href="/store?page={{ currentPage - 1 }}" id="prev">prev</a>
         {% endif %}
         {% for num in range(currentPage -4, currentPage) %}
         {% if num >= 1 %}
-        <a href="/user?q={{ searchWord }}&page={{ num }}">{{ num }}</a>
+        <a href="/store?page={{ num }}">{{ num }}</a>
         {% endif %}
         {% endfor %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage }}" id="active">{{ currentPage }}</a>
+        <a href="/store?page={{ currentPage }}" id="active">{{ currentPage }}</a>
         {% for num in range(currentPage +1, currentPage +5) %}
         {% if num <= page %}
-        <a href="/user?q={{ searchWord }}&page={{ num }}">{{ num }}</a>
+        <a href="/store?page={{ num }}">{{ num }}</a>
         {% endif %}
         {% endfor %}
         {% if currentPage < page %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage + 1 }}" id="next">next</a>
+        <a href="/store?page={{ currentPage + 1 }}" id="next">next</a>
         {% endif %}
     </div>
 </body>
