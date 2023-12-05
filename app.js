@@ -173,7 +173,7 @@ async function startServer() {
 
 app.get("/user", (req, res) => {
   let searchResults = [];
-  const searchWord = req.query.q || '';
+  const searchWord = req.query.q || "";
   userResults.forEach((user) => {
     if (user.Name.toLowerCase().includes(searchWord)) {
       searchResults.push(user);
@@ -202,14 +202,76 @@ app.get("/user", (req, res) => {
 
 app.get("/user/:ID", (req, res) => {
   const userData = [];
+  let visitData = [];
+  let itemData = [];
   let userID = req.params.ID;
   userData.push(userResults.find((user) => user.ID === userID));
-  let page = req.query.page || 1;
+  let query = `SELECT orders.id, orders.ordered_at, store.address
+  FROM user
+  JOIN orders ON user.id = orders.user_id
+  JOIN Store ON orders.store_id = store.id
+  WHERE user.id = ?
+  ORDER BY orders.ordered_at DESC;`;
 
-  res.render("user", {
-    header: userHdResults,
-    data: userData,
-    currentPage: parseInt(page),
+
+  function getVisitData() {
+    const visitNum = `SELECT store.name, count(*) AS c
+    FROM user
+    JOIN orders ON user.id = orders.user_id
+    JOIN Store ON orders.store_id = store.id
+    WHERE user.id = ?
+    GROUP BY store.name
+    LIMIT 5;`;
+    return new Promise((resolve, reject) => {
+      db.all(visitNum, [userID], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          visitData = rows;
+          resolve();
+        }
+      });
+    });
+  }
+
+  function getItemData() {
+    const itemNum = `SELECT item.name, count(*) AS c
+    FROM user
+    JOIN orders ON user.id = orders.user_id
+    JOIN orderitem ON orders.id = orderitem.order_id
+    JOIN item ON Orderitem.item_id = item.id
+    WHERE user.id = ?
+    GROUP BY item.name
+    ORDER BY c DESC
+    LIMIT 5;`;
+    return new Promise((resolve, reject) => {
+      db.all(itemNum, [userID], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          itemData = rows;
+          resolve();
+        }
+      });
+    });
+  }
+
+  getVisitData();
+  getItemData();
+
+  db.all(query, [userID], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      orderData = rows;
+      res.render("user", {
+        header: userHdResults,
+        data: userData,
+        orderData: orderData,
+        visitData: visitData,
+        itemData: itemData
+      });
+    }
   });
 });
 
@@ -233,6 +295,17 @@ app.get("/order", (req, res) => {
   });
 });
 
+app.get("/order/:ID", (req, res) => {
+  const orderData = [];
+  let orderID = req.params.ID;
+  orderData.push(orderResults.find((order) => order.id === orderID));
+
+  res.render("order_detail", {
+    header: orderHdResults,
+    data: orderData,
+  });
+});
+
 app.get("/order_item", (req, res) => {
   const itemsPerPage = 20;
   let startIndex = 0;
@@ -250,6 +323,27 @@ app.get("/order_item", (req, res) => {
     data: limitedResults,
     page: totalPage,
     currentPage: parseInt(page),
+  });
+});
+
+app.get("/order_item/:ID", (req, res) => {
+  let orderID = req.params.ID;
+  let orderData = [];
+  const dataQuery = `SELECT Orderitem.id, Orderitem.order_id, Orderitem.item_id, item.name
+  FROM orderitem
+  JOIN item ON orderitem.item_id = item.id
+  WHERE order_id=?;`;
+
+  db.all(dataQuery, [orderID], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      orderData = rows;
+      res.render("orderitem_detail", {
+        header: oiHdResults,
+        data: orderData,
+      });
+    }
   });
 });
 
@@ -277,12 +371,10 @@ app.get("/item/:ID", (req, res) => {
   const itemData = [];
   let itemID = req.params.ID;
   itemData.push(itemResults.find((item) => item.id === itemID));
-  let page = req.query.page || 1;
 
   res.render("item_detail", {
     header: itemHdResults,
     data: itemData,
-    currentPage: parseInt(page),
   });
 });
 
@@ -307,16 +399,105 @@ app.get("/store", (req, res) => {
 });
 
 app.get("/store/:ID", (req, res) => {
-  const storeData = [];
+  let storeData = [];
+  let storeMonthly = [];
+  let storeVisit = [];
   let storeID = req.params.ID;
   storeData.push(storeResults.find((store) => store.id === storeID));
-  let page = req.query.page || 1;
-  console.log(storeData);
-  res.render("store_detail", {
-    header: storeHdResults,
-    data: storeData,
-    currentPage: parseInt(page),
-  });
+  let dataQuery = `SELECT
+  strftime('%Y-%m', orders.ordered_at) AS month,
+  SUM(item.unit_price) AS revenue,
+  count(*) AS count
+  FROM orders
+  JOIN orderitem ON orders.id = orderitem.order_id
+  JOIN item ON orderitem.item_id = item.id
+  JOIN Store ON orders.store_id = store.id
+  WHERE store_id = ?
+  GROUP BY month;`;
+  let query = `${req.query.month}%`;
+
+  function getStoreVisit() {
+    const visitNum = `SELECT user.id, user.name, count(*) AS visit
+      FROM orders JOIN store ON orders.store_id = store.id
+      JOIN user ON user.id = orders.user_id
+      WHERE store.id =?
+      GROUP BY user.id
+      ORDER BY visit DESC LIMIT 10;`;
+    return new Promise((resolve, reject) => {
+      db.all(visitNum, [storeID], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          storeVisit = rows;
+          resolve();
+        }
+      });
+    });
+  }
+
+  function getMonthlyStoreVisit() {
+    const MonthlyVisitNum = `SELECT user.id, user.name, count(*) AS visit
+      FROM orders
+      JOIN store ON orders.store_id = store.id
+      JOIN user ON user.id = orders.user_id
+      WHERE store.id = ? AND Orders.ordered_at LIKE ?
+      GROUP BY orders.id
+      ORDER BY visit DESC LIMIT 10;`;
+    return new Promise((resolve, reject) => {
+      db.all(MonthlyVisitNum, [storeID, query], (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          storeVisit = rows;
+          resolve();
+        }
+      });
+    });
+  }
+
+  if (query !== "undefined%") {
+    dataQuery = `SELECT strftime('%Y-%m-%d', orders.ordered_at) AS day,
+    SUM(item.unit_price) AS daily_sales,
+    COUNT(*) AS order_count
+    FROM orders
+    JOIN orderitem ON orders.id = orderitem.order_id
+    JOIN item ON orderitem.item_id = item.id
+    JOIN Store ON orders.store_id = store.id
+    WHERE store_id = ?
+    AND Orders.ordered_at LIKE ?
+    GROUP BY day;`;
+
+    getMonthlyStoreVisit();
+
+    db.all(dataQuery, [storeID, query], (err, rows) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        storeMonthly = rows;
+        res.render("store_daily_detail", {
+          header: storeHdResults,
+          data: storeData,
+          storeMonthly: storeMonthly,
+          storeVisit: storeVisit,
+        });
+      }
+    });
+  } else {
+    getStoreVisit();
+    db.all(dataQuery, [storeID], (err, rows) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        storeMonthly = rows;
+        res.render("store_detail", {
+          header: storeHdResults,
+          data: storeData,
+          storeMonthly: storeMonthly,
+          storeVisit: storeVisit,
+        });
+      }
+    });
+  }
 });
 
 startServer();
