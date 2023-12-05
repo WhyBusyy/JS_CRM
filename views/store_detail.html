@@ -29,8 +29,8 @@
                 {% endfor %}
             </tr>
         </thead>
-        <tbody id="tableBody">
-            <tr>           
+        <tbody>
+            <tr>
                 <td>{{data[0].id}}</td>
                 <td>{{data[0].name}}</td>
                 <td>{{data[0].type}}</td>
@@ -38,6 +38,46 @@
             </tr>
         </tbody>
     </table>
+    <BR>
+    <h2> 월간 매출액 </h2>
+    <table>
+        <thead>
+            <tr>
+                <td>month</td>
+                <td>revenue</td>
+                <td>count</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for datas in storeMonthly %}
+            <tr>
+                <td><a href="?month={{datas.month}}">{{datas.month}}</a></td>
+                <td>{{datas.revenue}}</td>
+                <td>{{datas.count}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <BR>
+        <h2> 매장 단골 고객 </h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>user_id</td>
+                    <td>name</td>
+                    <td>frequency</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in storeVisit %}
+                <tr>
+                    <td><a href="/user/{{user.ID}}">{{user.ID}}</a></td>
+                    <td>{{user.Name}}</td>
+                    <td>{{user.visit}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     <div class="pagination">
         <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
     </div>
