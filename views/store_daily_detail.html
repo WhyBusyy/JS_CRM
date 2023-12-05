@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Customer Management System</title>
+</head>
+
+<body>
+    <div>
+        <nav>
+            <ul>
+                <li><a href="/user">User</a></li>
+                <li><a href="/order">Order</a></li>
+                <li><a href="/order_item">Order Item</a></li>
+                <li><a href="/item">Item</a></li>
+                <li><a href="/store">Store</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h1> 상점 정보 </h1>
+    <table>
+        <thead>
+            <tr>
+                {% for key in header %}
+                <td>{{ key }}</td>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{data[0].id}}</td>
+                <td>{{data[0].name}}</td>
+                <td>{{data[0].type}}</td>
+                <td>{{data[0].address}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <BR>
+    <h2> 월간 매출액 </h2>
+    <table>
+        <thead>
+            <tr>
+                <td>day</td>
+                <td>daily_sales</td>
+                <td>count</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for datas in storeMonthly %}
+            <tr>
+                <td>{{datas.day}}</td>
+                <td>{{datas.daily_sales}}</td>
+                <td>{{datas.order_count}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <BR>
+        <h2> 매장 월간 단골 고객 </h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>user_id</td>
+                    <td>name</td>
+                    <td>frequency</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in storeVisit %}
+                <tr>
+                    <td><a href="/user/{{user.ID}}">{{user.ID}}</a></td>
+                    <td>{{user.Name}}</td>
+                    <td>{{user.visit}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <div class="pagination">
+        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+    </div>
+</body>
+
+</html>
