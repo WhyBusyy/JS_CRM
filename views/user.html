@@ -32,7 +32,7 @@
             </tr>
         </thead>
         <tbody id="tableBody">
-            <tr>           
+            <tr>
                 <td>{{data[0].Name}}</td>
                 <td>{{data[0].Gender}}</td>
                 <td>{{data[0].Age}}</td>
@@ -41,6 +41,42 @@
             </tr>
         </tbody>
     </table>
+    <BR>
+    <h2> 사용자 주문 정보 </h2>
+    <table>
+        <thead>
+            <tr>
+                <td>order_id</td>
+                <td>purchased date</td>
+                <td>purchased location</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orderData %}
+            <tr>
+                <td><a href="/user/{{user.ID}}">{{order.id}}</a></td>
+                <td>{{order.ordered_at}}</td>
+                <td>{{order.address}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="Ranking">
+        <h2>자주 방문한 매장 TOP5</h2>
+        <ol>
+            {% for Rank in visitData %}
+            <li>{{ Rank.name }}({{ Rank.c }}번 방문)</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="Ranking">
+        <h2>자주 주문한 상품 TOP5</h2>
+        <ol>
+            {% for Ranking in itemData %}
+            <li>{{ Ranking.name }}({{ Ranking.c }}번 주문)</li>
+            {% endfor %}
+        </ol>
+    </div>
     <div class="pagination">
         <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
     </div>
