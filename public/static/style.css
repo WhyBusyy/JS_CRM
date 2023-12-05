@@ -1,3 +1,7 @@
+body {
+    padding: 0 30px;
+}
+
 nav {
     text-align: left;
     overflow: hidden;
@@ -17,13 +21,14 @@ ul {
     margin: 0;
 }
 
-li {
+ul li {
     float: left;
     padding: 3px 3px;
 }
 
-h1 {
-    text-align: center;
+h1, h2{
+    padding-top: 18px;
+    padding-left: 10px;
 }
 
 form {
@@ -60,6 +65,14 @@ td a {
 td a:hover {
     text-decoration: underline;
     color: rgb(29, 159, 219);
+}
+
+.Ranking {
+    padding-top: 20px;
+}
+
+.Ranking ol li {
+    list-style: circle inside;
 }
 
 .pagination {
