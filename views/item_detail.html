@@ -35,6 +35,26 @@
             </tr>
         </tbody>
     </table>
+    <BR>
+    <h2> 월간 매출액 </h2>
+    <table>
+        <thead>
+            <tr>
+                <td>month</td>
+                <td>revenue</td>
+                <td>count</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in itemtotalData %}
+            <tr>
+                <td>{{data.month}}</td>
+                <td>{{data.total}}</td>
+                <td>{{data.count}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <div class="pagination">
         <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
     </div>
