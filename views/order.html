@@ -32,9 +32,10 @@
         <tbody id="tableBody">
             {% for order in data %}
             <tr>
-                {% for key in header %}
-                <td><a href="/order/{{ order.ID }}">{{ order[key] }}</a></td>
-                {% endfor %}
+                <td><a href="/order_item/{{ order.id }}">{{ order.id }}</a></td>
+                <td>{{ order.ordered_at }}</td>
+                <td>{{ order.store_id }}</td>
+                <td>{{ order.user_id }}</td>
             </tr>
             {% endfor %}
         </tbody>
