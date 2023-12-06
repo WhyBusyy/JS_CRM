@@ -54,9 +54,9 @@
         <tbody>
             {% for order in orderData %}
             <tr>
-                <td><a href="/user/{{user.ID}}">{{order.id}}</a></td>
+                <td><a href="/order_item/{{order.id}}">{{order.id}}</a></td>
                 <td>{{order.ordered_at}}</td>
-                <td>{{order.address}}</td>
+                <td><a href="/store/{{order.store_id}}">{{order.store_id}}</a></td>
             </tr>
             {% endfor %}
         </tbody>
