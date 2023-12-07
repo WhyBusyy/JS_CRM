@@ -23,6 +23,11 @@
     <h1> 고객 목록 </h1>
     <form action="/user" method="GET">
         <input name="q" type="text" placeholder="사용자 이름을 입력하세요">
+        <select name="gender">
+            <option selected disabled>성별</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
         <button>검색</button>
     </form>
     <table>
@@ -49,21 +54,27 @@
     </table>
     <div class="pagination">
         {% if currentPage !== 1 %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage - 1 }}" id="prev">prev</a>
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage - 1 }}" id="prev">prev</a>
+        {% endif %}
+        {% if currentPage >= 6 %}
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page=1">1</a> ...
         {% endif %}
         {% for num in range(currentPage -4, currentPage) %}
         {% if num >= 1 %}
-        <a href="/user?q={{ searchWord }}&page={{ num }}">{{ num }}</a>
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a>
         {% endif %}
         {% endfor %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage }}" id="active">{{ currentPage }}</a>
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage }}" id="active">{{ currentPage }}</a>
         {% for num in range(currentPage +1, currentPage +5) %}
         {% if num <= page %}
-        <a href="/user?q={{ searchWord }}&page={{ num }}">{{ num }}</a>
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a>
         {% endif %}
         {% endfor %}
+        {% if currentPage <= page -6 %}
+        ... <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ page }}">{{ page }}</a>
+        {% endif %}
         {% if currentPage < page %}
-        <a href="/user?q={{ searchWord }}&page={{ currentPage + 1 }}" id="next">next</a>
+        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage + 1 }}" id="next">next</a>
         {% endif %}
     </div>
 </body>
