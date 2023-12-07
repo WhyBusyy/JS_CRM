@@ -1,116 +1,80 @@
 const { loadData } = require("./functions/loadData.js");
+const { pagination } = require("./functions/pagination.js");
 
 async function userRoute(req, res) {
   let data = await loadData("user");
   let searchResults = [];
   const searchWord = req.query.q || "";
+  const selectedGender = req.query.gender || "";
   data.results.forEach((user) => {
     if (user.Name.toLowerCase().includes(searchWord)) {
-      searchResults.push(user);
+      if (user.Gender.includes(selectedGender)) {
+        searchResults.push(user);
+      }
     }
   });
 
-  const itemsPerPage = 20;
-  let startIndex = 0;
-  let endIndex;
-
-  let page = req.query.page || 1;
-  startIndex = (page - 1) * itemsPerPage;
-  endIndex = startIndex + itemsPerPage;
-  const totalPage = Math.ceil(searchResults.length / itemsPerPage);
-
-  const limitedResults = searchResults.slice(startIndex, endIndex);
+  const results = pagination(req, searchResults);
 
   res.render("index", {
     header: data.hdResults,
-    data: limitedResults,
-    page: totalPage,
-    currentPage: parseInt(page),
+    data: results.limitedResults,
+    page: results.totalPage,
+    currentPage: parseInt(results.page),
     searchWord: searchWord,
+    selectedGender: selectedGender,
   });
 }
 
 async function orderRoute(req, res) {
   let data = await loadData("orders");
-  const itemsPerPage = 20;
-  let startIndex = 0;
-  let endIndex;
-
-  let page = req.query.page || 1;
-  startIndex = (page - 1) * itemsPerPage;
-  endIndex = startIndex + itemsPerPage;
-  const totalPage = Math.ceil(data.results.length / itemsPerPage);
-
-  const limitedResults = data.results.slice(startIndex, endIndex);
+  const results = pagination(req, data.results);
 
   res.render("order", {
+    table: "order",
     header: data.hdResults,
-    data: limitedResults,
-    page: totalPage,
-    currentPage: parseInt(page),
+    data: results.limitedResults,
+    page: results.totalPage,
+    currentPage: parseInt(results.page),
   });
 }
 
 async function oiRoute(req, res) {
   let data = await loadData("orderitem");
-  const itemsPerPage = 20;
-  let startIndex = 0;
-  let endIndex;
-
-  let page = req.query.page || 1;
-  startIndex = (page - 1) * itemsPerPage;
-  endIndex = startIndex + itemsPerPage;
-  const totalPage = Math.ceil(data.results.length / itemsPerPage);
-
-  const limitedResults = data.results.slice(startIndex, endIndex);
+  const results = pagination(req, data.results);
 
   res.render("order_item", {
+    table: "order_item",
     header: data.hdResults,
-    data: limitedResults,
-    page: totalPage,
-    currentPage: parseInt(page),
+    data: results.limitedResults,
+    page: results.totalPage,
+    currentPage: parseInt(results.page),
   });
 }
 
 async function itemRoute(req, res) {
   let data = await loadData("item");
-  const itemsPerPage = 20;
-  let startIndex = 0;
-  let endIndex;
-
-  let page = req.query.page || 1;
-  startIndex = (page - 1) * itemsPerPage;
-  endIndex = startIndex + itemsPerPage;
-  const totalPage = Math.ceil(data.results.length / itemsPerPage);
-
-  const limitedResults = data.results.slice(startIndex, endIndex);
+  const results = pagination(req, data.results);
 
   res.render("item", {
+    table: "item",
     header: data.hdResults,
-    data: limitedResults,
-    page: totalPage,
-    currentPage: parseInt(page),
+    data: results.limitedResults,
+    page: results.totalPage,
+    currentPage: parseInt(results.page),
   });
 }
 
 async function storeRoute(req, res) {
   let data = await loadData("store");
-  const itemsPerPage = 20;
-  let startIndex = 0;
-  let endIndex;
-
-  let page = req.query.page || 1;
-  startIndex = (page - 1) * itemsPerPage;
-  endIndex = startIndex + itemsPerPage;
-  const totalPage = Math.ceil(data.results.length / itemsPerPage);
-
-  const limitedResults = data.results.slice(startIndex, endIndex);
+  const results = pagination(req, data.results);
 
   res.render("store", {
+    table: "store",
     header: data.hdResults,
-    data: limitedResults,
-    page: totalPage,
-    currentPage: parseInt(page),
+    data: results.limitedResults,
+    page: results.totalPage,
+    currentPage: parseInt(results.page),
   });
 }
 

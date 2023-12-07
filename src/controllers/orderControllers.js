@@ -1,9 +1,10 @@
 const { loadData } = require("./functions/loadData.js");
 
-async function orderId(req, res) {
-  let data = await loadData("orders");
+async function orderDetail(req, res) {
+  const orderID = req.params.ID;
+
+  const data = await loadData("orders");
   const orderData = [];
-  let orderID = req.params.ID;
   orderData.push(data.results.find((order) => order.id === orderID));
 
   res.render("order_detail", {
@@ -12,4 +13,4 @@ async function orderId(req, res) {
   });
 };
 
-module.exports = { orderId };
+module.exports = { orderDetail };
