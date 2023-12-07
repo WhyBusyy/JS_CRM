@@ -26,7 +26,8 @@ ul li {
     padding: 3px 3px;
 }
 
-h1, h2{
+h1,
+h2 {
     padding-top: 18px;
     padding-left: 10px;
 }
@@ -38,6 +39,10 @@ form {
 input {
     width: 10rem;
     margin-bottom: 0.5rem;
+}
+
+select {
+    height: 1.3rem;
 }
 
 table {
@@ -80,7 +85,7 @@ td a:hover {
 }
 
 .pagination a {
-    width: 15px;
+    min-width: 15px;
     height: 15px;
     display: inline-block;
     text-decoration: none;
@@ -93,14 +98,6 @@ td a:hover {
 
 #active {
     background-color: rgb(103, 103, 103);
-}
-
-#prev {
-    width: 30px;
-}
-
-#next {
-    width: 30px;
 }
 
 #backHome {

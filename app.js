@@ -1,5 +1,4 @@
 const express = require("express");
-const sqlite3 = require("sqlite3");
 const nunjucks = require("nunjucks");
 const path = require("path");
 
@@ -24,9 +23,7 @@ nunjucks.configure("views", {
 app.set("view engine", "html");
 
 app.use((req, res, next) => {
-  // 모든 요청이 있을 때마다 미들웨어를 거쳐간다.. next()
   const start = Date.now();
-  //나중에 동작할 리스너 등록
   res.on("finish", () => {
     const end = Date.now();
     const duration = end - start;
