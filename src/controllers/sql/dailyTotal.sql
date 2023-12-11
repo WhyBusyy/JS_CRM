@@ -1,4 +1,5 @@
-SELECT strftime('%Y-%m-%d', orders.ordered_at) AS day,
+SELECT
+strftime('%Y-%m-%d', orders.ordered_at) AS day,
 SUM(item.unit_price) AS daily_sales,
 COUNT(*) AS order_count
 FROM orders
