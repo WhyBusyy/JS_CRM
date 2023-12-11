@@ -1,4 +1,4 @@
-const { loadData } = require("./functions/loadData.js");
+const { loadData } = require("./utility/loadData.js");
 
 async function orderDetail(req, res) {
   const orderID = req.params.ID;

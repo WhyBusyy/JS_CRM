@@ -1,5 +1,5 @@
-const { loadData } = require("./functions/loadData.js");
-const { pagination } = require("./functions/pagination.js");
+const { loadData } = require("./utility/loadData.js");
+const { pagination } = require("./utility/pagination.js");
 
 async function userRoute(req, res) {
   let data = await loadData("user");

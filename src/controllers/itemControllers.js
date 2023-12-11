@@ -1,7 +1,7 @@
 const fs = require("fs");
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("./src/datas/crm.db");
-const { loadData } = require("./functions/loadData.js");
+const { loadData } = require("./utility/loadData.js");
 
 async function itemDetail(req, res) {
   const query = fs.readFileSync("src/controllers/sql/itemMonthlyTotal.sql", "utf-8");
