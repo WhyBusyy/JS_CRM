@@ -18,7 +18,7 @@ async function storeDetail(req, res) {
   const storeVisit = await getRankData(totalVisit, storeID);
   const storeMonthlyVisit = await getRankData(monthlyVisit, storeID, reqMonth);
 
-  if (reqMonth !== "undefined%") {
+  if (req.query.month) {
     db.all(dailyTotal, [storeID, reqMonth], (err, rows) => {
       if (err) {
         console.error(err.message);
