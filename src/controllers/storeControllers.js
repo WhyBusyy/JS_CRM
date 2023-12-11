@@ -4,12 +4,13 @@ const db = new sqlite3.Database("./src/datas/crm.db");
 const { loadData } = require("./utility/loadData.js");
 const { getRankData } = require("./utility/getRankData.js");
 
+const monthlyTotal = fs.readFileSync("src/controllers/sql/monthlyTotal.sql", "utf8");
+const dailyTotal = fs.readFileSync("src/controllers/sql/dailyTotal.sql", "utf8");
+const totalVisit = fs.readFileSync("src/controllers/sql/totalVisit.sql", "utf8");
+const monthlyVisit = fs.readFileSync("src/controllers/sql/monthlyVisit.sql", "utf8");
+
 async function storeDetail(req, res) {
   const reqMonth = `${req.query.month}%`;
-  const monthlyTotal = fs.readFileSync("src/controllers/sql/monthlyTotal.sql", "utf8");
-  const dailyTotal = fs.readFileSync("src/controllers/sql/dailyTotal.sql", "utf8");
-  const totalVisit = fs.readFileSync("src/controllers/sql/totalVisit.sql", "utf8");
-  const monthlyVisit = fs.readFileSync("src/controllers/sql/monthlyVisit.sql", "utf8");
 
   const data = await loadData("store");
   const storeID = req.params.ID;

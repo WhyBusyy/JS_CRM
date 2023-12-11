@@ -4,19 +4,17 @@ const db = new sqlite3.Database("./src/datas/crm.db");
 const { loadData } = require("./utility/loadData.js");
 const { getRankData } = require("./utility/getRankData.js");
 
+const query = fs.readFileSync("src/controllers/sql/userOrderData.sql", "utf8");
+const visitRank = fs.readFileSync("src/controllers/sql/userVisitRank.sql", "utf8");
+const itemRank = fs.readFileSync("src/controllers/sql/userItemRank.sql", "utf8");
+
 async function userDetail(req, res) {
-  const query = fs.readFileSync("src/controllers/sql/userOrderData.sql", "utf8");
   const userID = req.params.ID;
 
   const data = await loadData("user");
-
   const userData = [];
   userData.push(data.results.find((user) => user.ID === userID));
-
-  const visitRank = fs.readFileSync("src/controllers/sql/userVisitRank.sql", "utf8");
   const visitRankData = await getRankData(visitRank, userID);
-
-  const itemRank = fs.readFileSync("src/controllers/sql/userItemRank.sql", "utf8");
   const itemRankData = await getRankData(itemRank, userID);
 
   db.all(query, [userID], (err, rows) => {

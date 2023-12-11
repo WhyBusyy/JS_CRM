@@ -3,8 +3,9 @@ const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("./src/datas/crm.db");
 const { loadData } = require("./utility/loadData.js");
 
+const query = fs.readFileSync("src/controllers/sql/itemMonthlyTotal.sql", "utf-8");
+
 async function itemDetail(req, res) {
-  const query = fs.readFileSync("src/controllers/sql/itemMonthlyTotal.sql", "utf-8");
   const itemID = req.params.ID;
 
   const data = await loadData("item");
