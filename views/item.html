@@ -9,17 +9,7 @@
 </head>
 
 <body>
-    <div>
-        <nav>
-            <ul>
-                <li><a href="/user">User</a></li>
-                <li><a href="/order">Order</a></li>
-                <li><a href="/order_item">Order Item</a></li>
-                <li><a href="/item">Item</a></li>
-                <li><a href="/store">Store</a></li>
-            </ul>
-        </nav>
-    </div>
+    {% include 'common/nav.html' %}
     <h1> 아이템 목록 </h1>
     <table>
         <thead>
@@ -40,31 +30,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        {% if currentPage !== 1 %}
-        <a href="/{{ table }}?page={{ currentPage - 1 }}">prev</a>
-        {% endif %}
-        {% if currentPage >= 6 %}
-        <a href="/{{ table }}?page=1">1</a> ...
-        {% endif %}
-        {% for num in range(currentPage -4, currentPage) %}
-        {% if num >= 1 %}
-        <a href="/{{ table }}?page={{ num }}">{{ num }}</a>
-        {% endif %}
-        {% endfor %}
-        <a href="/{{ table }}?page={{ currentPage }}" id="active">{{ currentPage }}</a>
-        {% for num in range(currentPage +1, currentPage +5) %}
-        {% if num <= page %}
-        <a href="/{{ table }}?page={{ num }}">{{ num }}</a>
-        {% endif %}
-        {% endfor %}
-        {% if currentPage <= page -6 %}
-        ... <a href="/{{ table }}?page={{ page }}">{{ page }}</a>
-        {% endif %}
-        {% if currentPage < page %}
-        <a href="/{{ table }}?page={{ currentPage + 1 }}">next</a>
-        {% endif %}
-    </div>
+    {% include 'common/pagination.html' %}
 </body>
 
 </html>
