@@ -1,31 +1,35 @@
-<div class="pagination">
-    {% if currentPage !== 1 %}
-    <a href="/{{ table }}?page={{ currentPage - 1 }}">prev</a>
-    {% endif %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
 
-    {% if currentPage >= 6 %}
-    <a href="/{{ table }}?page=1">1</a> ...
-    {% endif %}
+        {% if currentPage >= 6 %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page=1"><<</a></li>
+        {% endif %}
+        
+        {% if currentPage !== 1 %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage - 1 }}"><</a></li>
+        {% endif %}
+        
+        {% for num in range(currentPage - 4, currentPage) %}
+        {% if num >= 1 %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+        
+        <li class="page-item active" aria-current="page"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage }}">{{ currentPage }}</a></li>
+        
+        {% for num in range(currentPage + 1, currentPage + 5) %}
+        {% if num <= page %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+        
+        {% if currentPage < page %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage + 1 }}">></a></li>
+        {% endif %}
+        
+        {% if currentPage <= page - 6 %}
+        <li class="page-item"><a class="page-link" href="/{{ table }}?q={{ searchWord }}&gender={{ selectedGender }}&page={{ page }}">>></a></li>
+        {% endif %}
 
-    {% for num in range(currentPage - 4, currentPage) %}
-    {% if num >= 1 %}
-    <a href="/{{ table }}?page={{ num }}">{{ num }}</a>
-    {% endif %}
-    {% endfor %}
-
-    <a href="/{{ table }}?page={{ currentPage }}" id="active">{{ currentPage }}</a>
-
-    {% for num in range(currentPage + 1, currentPage + 5) %}
-    {% if num <= page %}
-    <a href="/{{ table }}?page={{ num }}">{{ num }}</a>
-    {% endif %}
-    {% endfor %}
-
-    {% if currentPage <= page - 6 %}
-    ... <a href="/{{ table }}?page={{ page }}">{{ page }}</a>
-    {% endif %}
-
-    {% if currentPage < page %}
-    <a href="/{{ table }}?page={{ currentPage + 1 }}">next</a>
-    {% endif %}
-</div>
+    </ul>
+</nav>

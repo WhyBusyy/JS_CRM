@@ -1,53 +1,40 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 상품 정보 </h1>
-    <table>
-        <thead>
-            <tr>
-                <td>{{ header[1] }}</td>
-                <td>{{ header[3] }}</td>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <tr>           
-                <td>{{data[0].name}}</td>
-                <td>{{data[0].unit_price}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <BR>
-    <h2> 월간 매출액 </h2>
-    <table>
-        <thead>
-            <tr>
-                <td>month</td>
-                <td>revenue</td>
-                <td>count</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for data in itemtotalData %}
-            <tr>
-                <td>{{data.month}}</td>
-                <td>{{data.total}}</td>
-                <td>{{data.count}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="pagination">
-        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
-    </div>
-</body>
-
-</html>
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 상품 정보 </h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>{{ header[1] }}</th>
+            <th>{{ header[3] }}</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <tr>
+            <td>{{data[0].name}}</td>
+            <td>{{data[0].unit_price}}</td>
+        </tr>
+    </tbody>
+</table>
+<h2 style="text-align: center; padding: 1rem 0;"> 월간 매출액 </h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>month</th>
+            <th>revenue</th>
+            <th>count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in itemtotalData %}
+        <tr>
+            <td>{{data.month}}</td>
+            <td>{{data.total}}</td>
+            <td>{{data.count}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div style="text-align: center; padding: 2rem 0;">
+    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+</div>
+{% endblock %}

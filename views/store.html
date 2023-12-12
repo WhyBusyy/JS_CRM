@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 상점 목록 </h1>
-    <table>
+{% extends 'common/index.html' %}
+{% block content %}
+    <h1  style="text-align: center; padding: 1rem 0;"> 상점 목록 </h1>
+    <table class="table table-hover">
         <thead>
             <tr>
                 {% for key in header %}
-                <td>{{ key }}</td>
+                <th>{{ key }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -31,6 +21,4 @@
         </tbody>
     </table>
     {% include 'common/pagination.html' %}
-</body>
-
-</html>
+{% endblock %}

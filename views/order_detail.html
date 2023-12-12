@@ -1,36 +1,24 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 주문 정보 </h1>
-    <table>
-        <thead>
-            <tr>
-                {% for key in header %}
-                <td>{{ key }}</td>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <tr>           
-                <td>{{ data[0].id }}</a></td>
-                <td>{{ data[0].ordered_at }}</td>
-                <td><a href="/store/{{ data[0].store_id }}">{{ data[0].store_id }}</a></td>
-                <td><a href="/user/{{ data[0].user_id }}">{{ data[0].user_id }}</a></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="pagination">
-        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
-    </div>
-</body>
-
-</html>
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 주문 정보 </h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            {% for key in header %}
+            <th>{{ key }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <tr>
+            <td>{{ data[0].id }}</a></td>
+            <td>{{ data[0].ordered_at }}</td>
+            <td><a href="/store/{{ data[0].store_id }}">{{ data[0].store_id }}</a></td>
+            <td><a href="/user/{{ data[0].user_id }}">{{ data[0].user_id }}</a></td>
+        </tr>
+    </tbody>
+</table>
+<div style="text-align: center; padding: 2rem 0;">
+    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+</div>
+{% endblock %}

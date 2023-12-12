@@ -17,6 +17,7 @@ async function userRoute(req, res) {
   const results = pagination(req, searchResults);
 
   res.render("index", {
+    table: "user",
     header: data.hdResults,
     data: results.limitedResults,
     page: results.totalPage,

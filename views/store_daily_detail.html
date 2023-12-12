@@ -1,76 +1,62 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 상점 정보 </h1>
-    <table>
-        <thead>
-            <tr>
-                {% for key in header %}
-                <td>{{ key }}</td>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{data[0].id}}</td>
-                <td>{{data[0].name}}</td>
-                <td>{{data[0].type}}</td>
-                <td>{{data[0].address}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <BR>
-    <h2> 일간 매출액 </h2>
-    <table>
-        <thead>
-            <tr>
-                <td>day</td>
-                <td>daily_sales</td>
-                <td>count</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for datas in storeMonthly %}
-            <tr>
-                <td>{{datas.day}}</td>
-                <td>{{datas.daily_sales}}</td>
-                <td>{{datas.order_count}}</td>
-            </tr>
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 상점 정보 </h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            {% for key in header %}
+            <th>{{ key }}</th>
             {% endfor %}
-        </tbody>
-    </table>
-    <BR>
-        <h2> 기간 내 매장 단골 고객 </h2>
-        <table>
-            <thead>
-                <tr>
-                    <td>user_id</td>
-                    <td>name</td>
-                    <td>frequency</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in storeVisit %}
-                <tr>
-                    <td><a href="/user/{{user.ID}}">{{user.ID}}</a></td>
-                    <td>{{user.Name}}</td>
-                    <td>{{user.visit}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    <div class="pagination">
-        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
-    </div>
-</body>
-
-</html>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{data[0].id}}</td>
+            <td>{{data[0].name}}</td>
+            <td>{{data[0].type}}</td>
+            <td>{{data[0].address}}</td>
+        </tr>
+    </tbody>
+</table>
+<h2 style="text-align: center; padding: 1rem 0;"> 일간 매출액 </h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>day</th>
+            <th>daily_sales</th>
+            <th>count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for datas in storeMonthly %}
+        <tr>
+            <td>{{datas.day}}</td>
+            <td>{{datas.daily_sales}}</td>
+            <td>{{datas.order_count}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2 style="text-align: center; padding: 1rem 0;"> 기간 내 매장 단골 고객 </h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>user_id</th>
+            <th>name</th>
+            <th>frequency</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in storeVisit %}
+        <tr>
+            <td><a href="/user/{{user.ID}}">{{user.ID}}</a></td>
+            <td>{{user.Name}}</td>
+            <td>{{user.visit}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div style="text-align: center; padding: 2rem 0;">
+    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+</div>
+{% endblock %}

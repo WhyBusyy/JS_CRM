@@ -1,75 +1,62 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 사용자 정보 </h1>
-    <table>
-        <thead>
-            <tr>
-                <td>{{ header[1] }}</td>
-                <td>{{ header[2] }}</td>
-                <td>{{ header[3] }}</td>
-                <td>{{ header[4] }}</td>
-                <td>{{ header[5] }}</td>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <tr>
-                <td>{{data[0].Name}}</td>
-                <td>{{data[0].Gender}}</td>
-                <td>{{data[0].Age}}</td>
-                <td>{{data[0].Birthdate}}</td>
-                <td>{{data[0].Address}}</td>
-            </tr>
-        </tbody>
-    </table>
-    <BR>
-    <h2> 사용자 주문 정보 </h2>
-    <table>
-        <thead>
-            <tr>
-                <td>order_id</td>
-                <td>purchased date</td>
-                <td>purchased location</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orderData %}
-            <tr>
-                <td><a href="/order_item/{{order.id}}">{{order.id}}</a></td>
-                <td>{{order.ordered_at}}</td>
-                <td><a href="/store/{{order.store_id}}">{{order.store_id}}</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="Ranking">
-        <h2>자주 방문한 매장 TOP5</h2>
-        <ol>
-            {% for Rank in visitData %}
-            <li>{{ Rank.name }}({{ Rank.c }}번 방문)</li>
-            {% endfor %}
-        </ol>
-    </div>
-    <div class="Ranking">
-        <h2>자주 주문한 상품 TOP5</h2>
-        <ol>
-            {% for Ranking in itemData %}
-            <li>{{ Ranking.name }}({{ Ranking.c }}번 주문)</li>
-            {% endfor %}
-        </ol>
-    </div>
-    <div class="pagination">
-        <a href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
-    </div>
-</body>
-
-</html>
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 사용자 정보 </h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>{{ header[1] }}</th>
+            <th>{{ header[2] }}</th>
+            <th>{{ header[3] }}</th>
+            <th>{{ header[4] }}</th>
+            <th>{{ header[5] }}</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        <tr>
+            <td>{{data[0].Name}}</td>
+            <td>{{data[0].Gender}}</td>
+            <td>{{data[0].Age}}</td>
+            <td>{{data[0].Birthdate}}</td>
+            <td>{{data[0].Address}}</td>
+        </tr>
+    </tbody>
+</table>
+<h2 style="text-align: center; padding: 1rem 0;"> 사용자 주문 정보 </h2>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>order_id</th>
+            <th>purchased date</th>
+            <th>purchased location</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orderData %}
+        <tr>
+            <td><a href="/order_item/{{order.id}}">{{order.id}}</a></td>
+            <td>{{order.ordered_at}}</td>
+            <td><a href="/store/{{order.store_id}}">{{order.store_id}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div style="text-align: center; padding: 2rem 0;">
+    <h2>자주 방문한 매장 TOP5</h2>
+    <ol class="list-group list-group-flush">
+        {% for Rank in visitData %}
+        <li class="list-group-item">{{ Rank.name }}({{ Rank.c }}번 방문)</li>
+        {% endfor %}
+    </ol>
+</div>
+<div style="text-align: center; padding: 2rem 0;">
+    <h2>자주 주문한 상품 TOP5</h2>
+    <ol class="list-group list-group-flush">
+        {% for Ranking in itemData %}
+        <li class="list-group-item">{{ Ranking.name }}({{ Ranking.c }}번 주문)</li>
+        {% endfor %}
+    </ol>
+</div>
+<div style="text-align: center; padding: 2rem 0;">
+    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+</div>
+{% endblock %}

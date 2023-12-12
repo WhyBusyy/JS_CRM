@@ -1,78 +1,38 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 고객 목록 </h1>
-    <form action="/user" method="GET">
-        <input name="q" type="text" placeholder="사용자 이름을 입력하세요">
-        <select name="gender">
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 고객 목록 </h1>
+<form class="form-inline" action="/user" method="GET" style="flex-direction: row-reverse;">
+    <div class="form-group">
+        <input class="form-control mx-sm-3" name="q" type="text" placeholder="사용자 이름을 입력하세요">
+        <select class="custom-select my-1 mr-sm-2" name="gender">
             <option selected disabled>성별</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
-        <button>검색</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <td>{{ header[0] }}</td>
-                <td>{{ header[1] }}</td>
-                <td>{{ header[2] }}</td>
-                <td>{{ header[3] }}</td>
-                <td>{{ header[4] }}</td>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            {% for user in data %}
-            <tr>
-                <td><a href="/user/{{ user.ID }}">{{ user.ID }}</a></td>
-                <td>{{ user.Name }}</td>
-                <td>{{ user.Gender }}</td>
-                <td>{{ user.Age }}</td>
-                <td>{{ user.Birthdate }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class="pagination">
-        {% if currentPage !== 1 %}
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage - 1 }}" id="prev">prev</a>
-        {% endif %}
-
-        {% if currentPage >= 6 %}
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page=1">1</a> ...
-        {% endif %}
-
-        {% for num in range(currentPage - 4, currentPage) %}
-        {% if num >= 1 %}
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a>
-        {% endif %}
-        {% endfor %}
-
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage }}" id="active">{{ currentPage}}</a>
-
-        {% for num in range(currentPage +1, currentPage + 5) %}
-        {% if num <= page %}
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ num }}">{{ num }}</a>
-        {% endif %}
-        {% endfor %}
-
-        {% if currentPage <= page - 6 %} ...
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ page }}">{{ page }}</a>
-        {% endif %}
-        
-        {% if currentPage < page %}
-        <a href="/user?q={{ searchWord }}&gender={{ selectedGender }}&page={{ currentPage + 1 }}" id="next">next</a>
-        {% endif %}
+        <button class="btn btn-primary my-1">검색</button>
     </div>
-</body>
-
-</html>
+</form>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>{{ header[0] }}</th>
+            <th>{{ header[1] }}</th>
+            <th>{{ header[2] }}</th>
+            <th>{{ header[3] }}</th>
+            <th>{{ header[4] }}</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        {% for user in data %}
+        <tr>
+            <td><a href="/user/{{ user.ID }}">{{ user.ID }}</a></td>
+            <td>{{ user.Name }}</td>
+            <td>{{ user.Gender }}</td>
+            <td>{{ user.Age }}</td>
+            <td>{{ user.Birthdate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'common/pagination.html' %}
+{% endblock %}

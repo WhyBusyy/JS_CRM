@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Customer Management System</title>
-</head>
-
-<body>
-    {% include 'common/nav.html' %}
-    <h1> 주문 아이템 목록 </h1>
-    <table>
-        <thead>
-            <tr>
-                {% for key in header %}
-                <td>{{ key }}</td>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            {% for order_item in data %}
-            <tr>
-                <td>{{ order_item.id }}</td>
-                <td><a href="/order/{{ order_item.order_id }}">{{ order_item.order_id }}</a></td>
-                <td><a href="/item/{{ order_item.item_id }}">{{ order_item.item_id }}</a></td>
-            </tr>
+{% extends 'common/index.html' %}
+{% block content %}
+<h1 style="text-align: center; padding: 1rem 0;"> 주문 아이템 목록 </h1>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            {% for key in header %}
+            <th>{{ key }}</th>
             {% endfor %}
-        </tbody>
-    </table>
-    {% include 'common/pagination.html' %}
-</body>
-
-</html>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        {% for order_item in data %}
+        <tr>
+            <td>{{ order_item.id }}</td>
+            <td><a href="/order/{{ order_item.order_id }}">{{ order_item.order_id }}</a></td>
+            <td><a href="/item/{{ order_item.item_id }}">{{ order_item.item_id }}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% include 'common/pagination.html' %}
+{% endblock %}
