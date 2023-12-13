@@ -27,14 +27,85 @@
     <tbody>
         {% for data in itemtotalData %}
         <tr>
-            <td>{{data.month}}</td>
-            <td>{{data.total}}</td>
-            <td>{{data.count}}</td>
+            <td class="month">{{data.month}}</td>
+            <td class="revenue">{{data.total}}</td>
+            <td class="counts">{{data.count}}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<div style="text-align: center; padding: 2rem 0;">
-    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to List</a>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div style="margin: 2rem auto; width: 80%;">
+    <h2 style="text-align: center; padding: 1rem 0;"> 월간 매출 그래프 </h2>
+    <canvas id="itemTotalChart"></canvas>
 </div>
+<div style="text-align: center; padding: 2rem 0;">
+    <a class="btn btn-primary my-1" href="#" onclick="window.history.back(); return false;" id="backHome">Back to
+        List</a>
+</div>
+<script>
+    let labels = [];
+    let month = document.getElementsByClassName('month');
+    for (let i = 0; i < month.length; i++) {
+        labels.push(month[i].textContent);
+    }
+
+    let revenueData = [];
+    let revenue = document.getElementsByClassName('revenue');
+    for (let i = 0; i < revenue.length; i++) {
+        revenueData.push(revenue[i].textContent);
+    }
+
+    let countData = [];
+    let counts = document.getElementsByClassName('counts');
+    for (let i = 0; i < counts.length; i++) {
+        countData.push(counts[i].textContent);
+    }
+
+    let ctx = document.getElementById('itemTotalChart').getContext('2d');
+    const mixedChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                type: 'line',
+                label: 'Item Count',
+                borderWidth: 1.5,
+                data: countData,
+                borderColor: 'rgb(59, 117, 175)',
+                backgroundColor: 'rgb(59, 117, 175)',
+                yAxisID: 'right'
+            }, {
+                type: 'bar',
+                label: 'Total Revenue',
+                data: revenueData,
+                borderColor: 'rgb(239, 134, 54)',
+                backgroundColor: 'rgb(239, 134, 54)',
+                yAxisID: 'left'
+            }],
+            labels: labels
+        },
+        options: {
+            scales: {
+                left: {
+                    position: 'left',
+                    beginAtZero: false,
+                    ticks: {
+                        callback: (value, index, ticks) => {
+                            return `${value.toLocaleString()}`;
+                        }
+                    }
+                },
+                right: {
+                    position: 'right',
+                    beginAtZero: false,
+                    ticks: {
+                        callback: (value, index, ticks) => {
+                            return `${value.toLocaleString()}`;
+                        }
+                    }
+                }
+            },
+        }
+    });
+</script>
 {% endblock %}
